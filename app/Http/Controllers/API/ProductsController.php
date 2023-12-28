@@ -69,19 +69,14 @@ class ProductsController extends Controller
       //   'product_description' => 'min:10'
       // ]);
 
-      
-        // $image_name = time().'.'.$request->product_image->extension();  
-        // $request->file->move(public_path('uploads'), $image_name);
-
-        $image = $request->file('product_image');
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
-        $image->move(public_path('images'), $imageName);
-        dd(11);
+      $image = $request->file('product_image');
+      $imageName = time() . '.' . $image->getClientOriginalExtension();
+      $image->move(public_path('images'), $imageName);
 
       $data = [
         'name' => $request['name'],
         'price_unit' => $request['price_unit'],
-        'image' => $request['product_image'],
+        'image' => $imageName,
         'quantity' => $request['product_quantity'],
         'brand_id' => $request['brand_id'],
         'category_id' => $request['product_category'],

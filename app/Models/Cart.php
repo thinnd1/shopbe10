@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+use DB;
+
 class Cart extends Model
 {
     use HasFactory;
@@ -26,7 +28,10 @@ class Cart extends Model
 
     public function getCart()
     {
-        return Cart::all();
+        return DB::table('cart')
+            ->select('products.price_unit as gia','products.image','products.name', 'cart.price_unit as kichthuoc','cart.quantity as soluong')
+            ->join('products','cart.product_id','=', 'products.id')
+            ->get();
     }
     
     public function insertCart($data)

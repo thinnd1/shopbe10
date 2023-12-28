@@ -17,6 +17,7 @@ use Illuminate\Foundation\Auth\User;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\OrderDetailController;
 use App\Http\Controllers\API\ShopController;
+use App\Http\Controllers\API\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,3 +104,7 @@ Route::get('shop/{id}', [ShopController::class, 'show'])->name('shop.show');
 Route::post('shops', [ShopController::class, 'store'])->name('shop.store');
 Route::put('shops/{id}', [ShopController::class, 'update'])->name('shop.update');
 Route::delete('shops/{id}', [ShopController::class, 'destroy'])->name('shop.destroy');
+
+// CartController
+Route::post('cart', [CartController::class, 'store']);
+Route::get('cart', [CartController::class, 'index']);

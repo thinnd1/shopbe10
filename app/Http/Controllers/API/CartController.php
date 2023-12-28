@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use DB;
 
 class CartController extends Controller
 {
@@ -17,7 +18,7 @@ class CartController extends Controller
     public function index()
     {
       $cart = $this->cart->getCart();
-      return response()->json($product);
+      return response()->json($cart);
     }
 
     public function store(Request $request)
@@ -25,14 +26,14 @@ class CartController extends Controller
         $data = [
             'user_id' => $request['user_id'],
             'product_id' => $request['product_id'],
-            'price_unit' => $request['price_unit'],
+            'price_unit' => $request['size'],
             'quantity' => $request['quantity'],
         ];
 
-        $shopInsert = $this->shop->insertShop($data);
+        $shopInsert = $this->cart->insertCart($data);
         return response()->json([
             'status'=>'ok',
-            'massage'=> 'Shop created successfuly',
+            'massage'=> 'Add Cart successfuly',
             'product'=> $shopInsert
        ]);
     }
