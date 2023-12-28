@@ -38,7 +38,7 @@ class Shop extends Model
     }
     public function getAllShop()
     {
-        return Shop::all();
+        return Shop::orderByDesc('id')->get();
     }
 
     public function getShopId($id)

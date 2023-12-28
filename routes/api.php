@@ -18,6 +18,7 @@ use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\OrderDetailController;
 use App\Http\Controllers\API\ShopController;
 use App\Http\Controllers\API\CartController;
+use App\Http\Controllers\API\ShopExpenseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -108,3 +109,5 @@ Route::delete('shops/{id}', [ShopController::class, 'destroy'])->name('shop.dest
 // CartController
 Route::post('cart', [CartController::class, 'store']);
 Route::get('cart', [CartController::class, 'index']);
+
+Route::post('shop-expense', [ShopExpenseController::class, 'store']);

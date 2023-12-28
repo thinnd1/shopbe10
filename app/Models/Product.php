@@ -52,7 +52,7 @@ class product extends Model
 
     public function getAllProduct()
     {
-        return Product::all();
+        return Product::orderByDesc('id')->get();
     }
 
     public function getProductId($id)

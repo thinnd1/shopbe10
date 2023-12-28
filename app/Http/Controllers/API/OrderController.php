@@ -49,7 +49,7 @@ class OrderController extends Controller
             'payment_id' => $request['payment_id'],
         ];
 
-        $order = $this->order->insert($data);
+        $order = $this->order->insertOrder($data);
 
         return response()->json([
             'status' => 'ok',

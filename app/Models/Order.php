@@ -60,7 +60,7 @@ class Order extends Model
 
     public function getAllOrder()
     {
-        return Order::all();
+        return Order::orderByDesc('id')->get();
     }
 
     public function getOrderId($id)
@@ -90,7 +90,7 @@ class Order extends Model
         return $order->save();
     }
 
-    public function insert($data)
+    public function insertOrder($data)
     {
         return Order::create($data);
     }
