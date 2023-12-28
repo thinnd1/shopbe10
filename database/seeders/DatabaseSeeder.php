@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
             ProductsTableSeeder::class,
             ProductImageSeeder::class,
             CategoryProductSeeder::class,
-            ProductLinkCategorieSeeder::class
+            ProductLinkCategorieSeeder::class,
+            UsersTableSeeder::class,
+            AdminSeeder::class
         ]);
     }
 }
