@@ -7,9 +7,9 @@ use App\Models\Cart;
 use App\Models\Wishlist;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 class AuthController extends Controller
 {
     public function SignUp(Request $request)
@@ -55,36 +55,13 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $validated_login = Validator::make($request->all(), [
-            "email" => "required|string|email|max:200",
-            "password" => "required|string"
-        ]);
+        $credentials = Config::get('services.passport') +[
+            'username' => $request->email,
+            'password' => $request->password
+        ];
 
-        if ($validated_login->fails()) {
-            return response()->json([
-                "message" => $validated_login->errors(),
-                "status" => "login validation error"
-            ]);
-        }
-
-        $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $token = $user->createToken('User Token')->accessToken;
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'User logged in successfully',
-                'user_id' => $user->id,
-                'access_token' => $token
-            ]);
-        } else {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Invalid credentials'
-            ]);
-        }
+        $res = Request::create('/oauth/token', 'POST', $credentials);
+        return App::handle($res);
     }
 }
 
