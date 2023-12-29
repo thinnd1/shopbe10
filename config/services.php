@@ -30,5 +30,17 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'passport' => [
+        "scope" => "*",
+        'grant_type' => env('PASSPORT_GRANT_TYPE'),
+        'client_id' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_ID'),
+        'client_secret' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET'),
+    ],
+    'passport-admin' => [
+        "scope" => "*",
+        'grant_type' => env('PASSPORT_GRANT_TYPE'),
+        'client_id' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_ADMIN_ID'),
+        'client_secret' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_ADMIN_SECRET'),
+    ]
 
 ];

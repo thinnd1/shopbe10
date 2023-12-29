@@ -49,7 +49,7 @@ public function create(Request $request){
   $user = User::create([
     'name'=>$request->name,
     'email'=>$request->email,
-    'password'=>md5($request->password),
+    'password'=>bcrypt($request->password),
   ]);
 
   // add a cart id to user (personal)
