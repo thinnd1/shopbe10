@@ -14,42 +14,17 @@ class AuthController extends Controller
 {
     public function SignUp(Request $request)
     {
-        $validated = Validator::make($request->json()->all(), [
-            'name' => 'required|string|min:3|max:55',
-            'email' => 'required|string|email|max:200|unique:user',
-            'password' => 'required|string|min:6',
-            'confirm_password' => 'required_with:password|same:password|min:6'
-        ]);
+      $user= User::create([
+        'name'=>$request->name,
+        'email'=>$request->email,
+        'password'=> md5($request-> password)
+      ]);
 
-        if ($validated->fails()) {
-            return response()->json([
-                'message' => $validated->errors(),
-                'status' => 'validation-error'
-            ], 404);
-        }
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password)
-        ]);
-
-        // add a cart id to user (personal)
-        $cart = Cart::create([
-            'user_id' => $user->id
-        ]);
-        // add a wishlist to user (personal)
-        $wishlist = Wishlist::create([
-            'user_id' => $user->id
-        ]);
-
-        return response()->json([
-            'message' => 'User registrated Successfuly',
-            'status' => 'ok',
-            'user' => $user,
-            'cart' => $cart,
-            'wishlist' => $wishlist
-        ], 201);
+      return response()->json([
+          'message' => 'User registrated Successfuly',
+          'status' => 'ok',
+          'user'=> $user,
+        ],201);
     }
 
 
