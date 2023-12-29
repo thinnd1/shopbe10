@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Admin;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 
 class AdminController extends Controller
 {
@@ -40,17 +40,13 @@ class AdminController extends Controller
     # login admin action
     public function LoginAdmin(Request $request)
     {
-        
-        $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-        if (auth()->guard('admin')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')]))
-        {
-            $admin = auth()->guard('admin')->user();
-            dd($admin);
-        }else{
-            return back()->with('error','your username and password are wrong.');
-        }
+        $credentials = Config::get('services.passport-admin') +[
+            'username' => $request->email,
+            'password' => $request->password
+        ];
+
+        $res = Request::create('/oauth/token', 'POST', $credentials);
+        return App::handle($res);
+
     }
 }
