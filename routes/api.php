@@ -107,7 +107,7 @@ Route::put('shops/{id}', [ShopController::class, 'update'])->name('shop.update')
 Route::delete('shops/{id}', [ShopController::class, 'destroy'])->name('shop.destroy');
 
 // CartController
-Route::post('cart', [CartController::class, 'store']);
+Route::post('cart/add', [CartController::class, 'store']);
 Route::get('cart', [CartController::class, 'index']);
 
 Route::post('shop-expense', [ShopExpenseController::class, 'store']);
