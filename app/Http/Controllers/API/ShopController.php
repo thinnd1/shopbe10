@@ -37,11 +37,6 @@ class ShopController extends Controller
             'phone' => $request['phone'],
             'email' => $request['email'],
             'address' => $request['address'],
-            'country' => $request['country'],
-            'state' => $request['state'],
-            'city' => $request['city'],
-            'is_primary' => $request['is_primary'],
-            'is_shipping_location' => $request['is_shipping_location'],
         ];
 
         $shopInsert = $this->shop->insertShop($data);

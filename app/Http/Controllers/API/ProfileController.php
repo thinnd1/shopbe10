@@ -8,7 +8,8 @@ use App\Models\User;
 
 class ProfileController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
       $user =  User::all()->where('id',$request->id)->first();
       return response()->json($user);
     }

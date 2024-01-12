@@ -31,7 +31,8 @@ public function show(){
     return response()->json($user);
 }
 
-public function create(Request $request){
+public function create(Request $request)
+{
   $validation = $request->validate([
    'name'=>'required|string|min:3|max:70',
    'email'=>'required|string|email|max:200|unique:user',
@@ -46,21 +47,6 @@ public function create(Request $request){
     ],404);
   }
 
-  $user = User::create([
-    'name'=>$request->name,
-    'email'=>$request->email,
-    'password'=>bcrypt($request->password),
-  ]);
-
-  // add a cart id to user (personal)
-  $cart= Cart::create([
-    'user_id'=>$user->id
-  ]);
-  // add a wishlist to user (personal)
-  $wishlist= Wishlist::create([
-     'user_id'=>$user->id
-  ]);
-
   return response()->json([
     'status'=>'ok',
     'message'=>'user create successfuly !! admin+',
@@ -69,7 +55,8 @@ public function create(Request $request){
   ], 201);
 }
 
-public function update(Request $request, $id){
+public function update(Request $request, $id)
+{
    $validation = $request->validate([
     'name'=>'string|min:3|max:55',
     'email'=>'string|email|max:200'
@@ -100,7 +87,8 @@ public function update(Request $request, $id){
     }
 
 }
-public function delete($id){
+public function delete($id)
+{
     $user_valid = User::findOrFail($id);
 
     if(is_null($user_valid)){

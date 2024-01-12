@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('shop_expenses', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('shop_id')->unsigned()->index();
-            $table->bigInteger('expenses_id')->unsigned()->index();
+            $table->unsignedBigInteger('shop_id')->unsigned()->index();
+            $table->unsignedBigInteger('expenses_id')->unsigned()->index();
             $table->timestamps();
         });
     }

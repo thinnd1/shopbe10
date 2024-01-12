@@ -21,7 +21,6 @@ class CreateOrdersTable extends Migration
             $table->string('shipping_method', 60)->default('default');
             $table->string('status', 120)->default('pending');
             $table->decimal('amount', 15);
-            $table->bigInteger('currency_id')->unsigned()->index()->nullable();
             $table->decimal('shipping_amount')->nullable();
             $table->text('description')->nullable();
             $table->string('coupon_code', 120)->nullable();
@@ -30,7 +29,7 @@ class CreateOrdersTable extends Migration
             $table->boolean('is_confirmed')->default(false);
             $table->string('discount_description', 255)->nullable();
             $table->boolean('is_finished')->default(1)->nullable();
-            $table->bigInteger('payment_id')->unsigned()->nullable()->index();
+            $table->integer('payment_id')->unsigned()->nullable()->index();
 
             $table->timestamps();
         });

@@ -111,3 +111,4 @@ Route::post('cart/add', [CartController::class, 'store']);
 Route::get('cart', [CartController::class, 'index']);
 
 Route::post('shop-expense', [ShopExpenseController::class, 'store']);
+Route::get('get-shop-expense', [ShopExpenseController::class, 'index']);

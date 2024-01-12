@@ -29,4 +29,10 @@ class ShopExpenseController extends Controller
             'ShopExpenses' => $shopExpensesInsert
        ]);
     }
+
+    public function index()
+    {
+        $shopExpenses = $this->shopExpense->getShop();
+        return response()->json($shopExpenses);
+    }
 }

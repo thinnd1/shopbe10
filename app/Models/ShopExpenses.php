@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class ShopExpenses extends Model
 {
@@ -16,6 +17,15 @@ class ShopExpenses extends Model
 
     public function addShopExpenses($data)
     {
-        ShopExpenses::create($data);
+        return ShopExpenses::create($data);
+    }
+
+    public function getShop()
+    {
+        return DB::table('shop_expenses')
+        ->join('shops', 'shop_expenses.shop_id', '=', 'shops.id')
+        ->join('expenses', 'shop_expenses.expenses_id', '=', 'expenses.id')
+        ->select('shop_expenses.created_at', 'shops.name as shop_name', 'expenses.package as expenses_pakage')
+        ->get();            
     }
 }
