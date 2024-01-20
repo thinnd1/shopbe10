@@ -22,6 +22,7 @@ class product extends Model
         'quantity',
         'brand_id',
         'category_id',
+        'shop_id',
         'product_description',
     ];
 

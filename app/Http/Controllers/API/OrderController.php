@@ -5,13 +5,18 @@ namespace App\Http\Controllers\API;
 use App\Models\Order;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Cart;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
     protected $order;
-    public function __construct(Order $order)
+    protected $cart;
+
+    public function __construct(Order $order, Cart $cart)
     {
         $this->order = $order;
+        $this->cart = $cart;
     }
     /**
      * Display a listing of the resource.
@@ -32,29 +37,24 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $data = [
-            'user_id' => $request['user_id'],
-            'shipping_option' => $request['shipping_option'],
-            'shipping_method' => $request['shipping_method'],
-            'status' => $request['status'],
-            'amount' => $request['amount'],
-            'shipping_amount' => $request['shipping_amount'],
-            'currency_id' => $request['currency_id'],
-            'description' => $request['description'],
-            'coupon_code' => $request['coupon_code'],
-            'discount_amount' => $request['discount_amount'],
-            'is_confirmed' => $request['is_confirmed'],
-            'discount_description' => $request['discount_description'],
-            'is_finished' => $request['is_finished'],
-            'payment_id' => $request['payment_id'],
-        ];
-
-        $order = $this->order->insertOrder($data);
+        $cart = $this->cart->getCart();
+        foreach($cart as $item) {
+            $data = [
+                'user_id' => $request['user_id'],
+                'product_id' => $item->product_id,
+                'shop_id' => $item->shop_id,
+                'amount' => $item->soluong, // số lượng
+                'price' => ($item->gia * $item->soluong), // gia
+                'description' => '',
+                'is_finished' => 1, // 1 : chưa, 2: đã giao xong
+            ];
+            $order = $this->order->insertOrder($data);
+            DB::table('cart')->delete($item->cart_id);
+        }
 
         return response()->json([
             'status' => 'ok',
-            'message' => 'Order product created successfuly',
-            'order' => $order
+            'message' => 'Order successfuly',
         ],200);
     }
 

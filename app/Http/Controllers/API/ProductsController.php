@@ -80,6 +80,7 @@ class ProductsController extends Controller
         'quantity' => $request['product_quantity'],
         'brand_id' => $request['brand_id'],
         'category_id' => $request['product_category'],
+        'shop_id' => $request['shop_id'],
         'product_description' => $request['product_description'],
       ];
 

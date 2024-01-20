@@ -65,12 +65,18 @@ Route::put('/admin/brands/update/{id}' ,[BrandsController::class, 'update']);
 Route::delete('/admin/brands/delete/{id}' ,[BrandsController::class, 'delete']);
 
 //Users Api Controllers
-Route::get('/admin/user/index/{id}', [UsersController::class, 'index']);
-Route::get('/admin/user/show',[UsersController::class, 'show']);
-Route::post('/admin/user/create', [UsersController::class, 'create']);
-Route::put('/admin/user/update/{id}', [UsersController::class, 'update']);
+Route::get('user/index', [UsersController::class, 'index']);
+Route::get('users/{id}', [UsersController::class, 'show'])->name('users.show');
+Route::post('users', [UsersController::class, 'store'])->name('users.store');
+Route::put('/user/update/{id}', [UsersController::class, 'update']);
 Route::delete('/admin/user/delete/{id}', [UsersController::class, 'delete']);
 Route::get('/admin/user/delete/{id}', [UsersController::class, 'delete']);
+
+// UsersController
+Route::delete('users/{user}', [UsersController::class, 'destroy'])->name('users.destroy');
+Route::post('/login', [UsersController::class, 'login'])->name('users.login');
+Route::post('/register', [UsersController::class, 'register'])->name('users.register');
+Route::post('/logout-user', [UsersController::class, 'logout'])->name('users.logout');
 
 Route::post('/admin/product/create', [ProductsController::class, 'create']);
 Route::get('/admin/product/create', [ProductsController::class, 'create']);

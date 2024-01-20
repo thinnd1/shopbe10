@@ -4,29 +4,35 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Cart;
-use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 use Illuminate\Support\Facades\Validator;
 
-use function Laravel\Prompts\password;
-
 class UsersController extends Controller
 {
-
-public function index(Request $request){
-  $user = DB::table('user')->where('id', $request->id)->first();
-  if($user){
-    return response()->json($user);
-  }else{
-    return response()->json(['user not found !!']);
+  protected $user;
+  public function __construct(User $user)
+  {
+    $this->user = $user;
   }
 
-}
-public function show(){
+  /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+
+  public function index()
+  {
+      $getUser = $this->user->getAllUser();
+      return response()->json($getUser);
+  }
+
+public function show()
+{
     $user = User::all();
     return response()->json($user);
 }
@@ -37,7 +43,6 @@ public function create(Request $request)
    'name'=>'required|string|min:3|max:70',
    'email'=>'required|string|email|max:200|unique:user',
    'password'=>'required|string|min:6',
-   'confirm_password'=>'required_with:password|same:password|min:6',
   ]);
 
   if(!$validation){
@@ -49,11 +54,47 @@ public function create(Request $request)
 
   return response()->json([
     'status'=>'ok',
-    'message'=>'user create successfuly !! admin+',
-    'message-option'=>'with creating a new user acount a cart and wishlist log will be created automaticly',
+    'message'=>'user create successfuly !',
     'user'=>$user
   ], 201);
 }
+
+  public function register(Request $request) 
+  {
+    $request['password'] = Hash::make($request['password']);
+    $user = User::create($request->toArray());
+
+    return response()->json([
+      'status'=>'ok',
+      'message' => 'User create successfuly !',
+      'user' => $user->id
+    ], 201);
+  }
+
+  public function login(Request $request) 
+  {
+    $user = User::where('email', $request->email)->first();
+    if ($user) {
+        if (Hash::check($request->password, $user->password)) {
+            Session::set('UserLogin', $user->id);
+            return response()->json([ 'status'=>'ok' ], 200);
+        } else {
+            $response = ["message" => "Password mismatch"];
+            return response()->json([ 'status'=>'ok', 'message'=> "Password mismatch"], 400);
+        }
+    } else {
+        return response()->json([ 'status'=>'ok', 'message'=> 'User does not exist'], 200);
+    }
+  }
+  public function logout()
+  {
+// Session::put('UserLogin', 11);
+// session()->forget('UserLogin');
+// Session::get('UserLogin')
+
+    session()->forget('UserLogin');
+    return response()->json([ 'status'=>'ok', 'message'=> 'User logout'], 200);
+  }
 
 public function update(Request $request, $id)
 {
@@ -84,30 +125,12 @@ public function update(Request $request, $id)
         'status'=>'ok',
         'message'=>'user updated successfuly',
         'user'=>$user]);
+      }
     }
 
-}
-public function delete($id)
-{
-    $user_valid = User::findOrFail($id);
-
-    if(is_null($user_valid)){
-        return response()->json([
-            'status'=>'error',
-            'message'=>'user not found !!',
-        ]);
-    }else{
-        // delete bout Cart & Wishlist user
-        $cart = Cart::where('user_id', $id)->delete();
-        $wishlist = Wishlist::where('user_id', $id)->delete();
-        $user = User::where('id', $id)
-        ->delete();
-        return response()->json([
-            'status'=>'ok',
-            'message'=>'user account deleted successfuly'
-        ]);
+    public function destroy($id)
+    {
+      $this->user->delete($id);
+      return $this->responseSuccess(1);
     }
-}
-
-
 }

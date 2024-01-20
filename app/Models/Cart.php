@@ -29,8 +29,10 @@ class Cart extends Model
     public function getCart()
     {
         return DB::table('cart')
-            ->select('products.price_unit as gia', 'products.id', 'products.image','products.name', 'cart.price_unit as kichthuoc','cart.quantity as soluong')
+            ->select('products.price_unit as gia', 'products.id as product_id', 'products.image', 'shops.id as shop_id',
+            'products.name', 'cart.price_unit as kichthuoc','cart.quantity as soluong', 'cart.id as cart_id')
             ->join('products','cart.product_id', '=', 'products.id')
+            ->join('shops', 'products.shop_id', '=', 'shops.id')
             ->orderBy('cart.id', 'desc')
             ->get();
     }

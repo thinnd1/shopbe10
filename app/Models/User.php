@@ -10,6 +10,7 @@ use App\Models\Cart;
 use App\Models\Wishlist;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -26,6 +27,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'mobile',
+        'address',
     ];
 
     /**
@@ -54,6 +57,23 @@ class User extends Authenticatable
     // user wishlist relation
     public function UserWishlist(): HasOne{
         return $this->hasOne(Wishlist::class);
+    }
+
+    public function getAllUser()
+    {
+        $getUser = User::all();
+        return $getUser;
+    }
+
+    public function getUserById($id)
+    {
+        $getUser = User::where('id', $id)->first();
+        return $getUser;
+    }
+
+    public function insert($data)
+    {
+        return User::create($data);
     }
 
 }
