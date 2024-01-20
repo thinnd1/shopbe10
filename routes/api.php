@@ -74,7 +74,7 @@ Route::get('/admin/user/delete/{id}', [UsersController::class, 'delete']);
 
 // UsersController
 Route::delete('users/{user}', [UsersController::class, 'destroy'])->name('users.destroy');
-Route::post('/login', [UsersController::class, 'login'])->name('users.login');
+Route::post('/login-user', [UsersController::class, 'login'])->name('users.login');
 Route::post('/register', [UsersController::class, 'register'])->name('users.register');
 Route::post('/logout-user', [UsersController::class, 'logout'])->name('users.logout');
 
@@ -94,6 +94,8 @@ Route::get('/admin/product/category/subCategory/{id}', [SubCategoryController::c
 // OrderController
 Route::get('order', [OrderController::class, 'index']);
 Route::get('order/{id}', [OrderController::class, 'show'])->name('order.show');
+Route::get('show-order-user-id/{id}', [OrderController::class, 'showOrderUserId']);
+
 Route::post('order', [OrderController::class, 'store'])->name('order.store');
 Route::put('order', [OrderController::class, 'update'])->name('order.update');
 Route::delete('order/{user}', [OrderController::class, 'destroy'])->name('order.destroy');

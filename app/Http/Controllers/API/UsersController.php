@@ -76,14 +76,13 @@ public function create(Request $request)
     $user = User::where('email', $request->email)->first();
     if ($user) {
         if (Hash::check($request->password, $user->password)) {
-            Session::set('UserLogin', $user->id);
-            return response()->json([ 'status'=>'ok' ], 200);
+            return response()->json([ 'status' => 'ok', 'data' => $user->id ], 200);
         } else {
             $response = ["message" => "Password mismatch"];
-            return response()->json([ 'status'=>'ok', 'message'=> "Password mismatch"], 400);
+            return response()->json([ 'status' => 'fail', 'message'=> "Password mismatch"], 400);
         }
     } else {
-        return response()->json([ 'status'=>'ok', 'message'=> 'User does not exist'], 200);
+        return response()->json([ 'status' => 'fail', 'message'=> 'User does not exist'], 200);
     }
   }
   public function logout()

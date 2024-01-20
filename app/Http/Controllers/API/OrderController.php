@@ -71,6 +71,11 @@ class OrderController extends Controller
         return response()->json($getOrderId);
     }
 
+    public function showOrderUserId($id)
+    {
+        $getOrderId = $this->order->getOrderByUserId($id);
+        return response()->json($getOrderId);
+    }
     /**
      * Update the specified resource in storage.
      *

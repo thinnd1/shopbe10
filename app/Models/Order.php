@@ -62,6 +62,11 @@ class Order extends Model
         return Order::where('id', $id)->first();
     }
 
+    public function getOrderByUserId($userId)
+    {
+        return Order::where('user_id', $userId)->first();
+    }
+
     public function updateOrder($id, $request)
     {
         $order = Order::find($id);
