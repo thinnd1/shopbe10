@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Shop;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ShopController extends Controller
 {
@@ -35,6 +36,7 @@ class ShopController extends Controller
         $data = [
             'name' => $request['name'],
             'phone' => $request['phone'],
+            'password' => Hash::make($request['password']),
             'email' => $request['email'],
             'address' => $request['address'],
         ];
@@ -90,5 +92,20 @@ class ShopController extends Controller
             'status' => 'ok',
             'message' => 'product deleted successfuly'
       ]);
+    }
+
+    public function loginShop(Request $request)
+    {
+        $user = Shop::where('email', $request->email)->first();
+        if ($user) {
+            if (Hash::check($request->password, $user->password)) {
+                return response()->json([ 'status' => 'ok', 'data' => $user->id ], 200);
+            } else {
+                $response = ["message" => "Password mismatch"];
+                return response()->json([ 'status' => 'fail', 'message'=> "Password mismatch"], 400);
+            }
+        } else {
+            return response()->json([ 'status' => 'fail', 'message'=> 'User does not exist'], 200);
+        }
     }
 }

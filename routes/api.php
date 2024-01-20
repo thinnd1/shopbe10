@@ -113,6 +113,7 @@ Route::get('shop/{id}', [ShopController::class, 'show'])->name('shop.show');
 Route::post('shops', [ShopController::class, 'store'])->name('shop.store');
 Route::put('shops/{id}', [ShopController::class, 'update'])->name('shop.update');
 Route::delete('shops/{id}', [ShopController::class, 'destroy'])->name('shop.destroy');
+Route::post('login-shop', [ShopController::class, 'loginShop']);
 
 // CartController
 Route::post('cart/add', [CartController::class, 'store']);

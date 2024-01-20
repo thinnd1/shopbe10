@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Admin;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -40,13 +41,16 @@ class AdminController extends Controller
     # login admin action
     public function LoginAdmin(Request $request)
     {
-        $credentials = Config::get('services.passport-admin') +[
-            'username' => $request->email,
-            'password' => $request->password
-        ];
-
-        $res = Request::create('/oauth/token', 'POST', $credentials);
-        return App::handle($res);
-
+        $user = Admin::where('email', $request->email)->first();
+        if ($user) {
+            if ($request->password == $user->password) {
+                return response()->json([ 'status' => 'ok', 'data' => $user->id ], 200);
+            } else {
+                $response = ["message" => "Password mismatch"];
+                return response()->json([ 'status' => 'fail', 'message'=> "Password mismatch"], 400);
+            }
+        } else {
+            return response()->json([ 'status' => 'fail', 'message'=> 'User does not exist'], 200);
+        }
     }
 }
