@@ -15,10 +15,8 @@ class Shop extends Model
         'email',
         'address',
         'country',
-        'state',
         'city',
-        'is_primary',
-        'is_shipping_location',
+        'password',
     ];
 
     /**
@@ -59,11 +57,7 @@ class Shop extends Model
         $shop->email = $data['email'];
         $shop->phone = $data['phone'];
         $shop->address = $data['address'];
-        $shop->country = $data['country'];
-        $shop->state = $data['state'];
-        $shop->city = $data['city'];
-        $shop->is_primary = $data['is_primary'];
-        $shop->is_shipping_location = $data['is_shipping_location'];
+        $shop->password = Hash::make($data['password']);
 
         return $shop->save();
     }

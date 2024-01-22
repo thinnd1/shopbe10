@@ -23,9 +23,9 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($shopId)
     {
-        $getOrder = $this->order->getAllOrder();
+        $getOrder = $this->order->getAllOrder($shopId);
         return response()->json($getOrder);
     }
 

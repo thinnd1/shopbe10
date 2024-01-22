@@ -52,9 +52,9 @@ class Order extends Model
         return $this->hasOne(Shipment::class, 'order_id');
     }
 
-    public function getAllOrder()
+    public function getAllOrder($shopId)
     {
-        return Order::orderByDesc('id')->get();
+        return Order::orderByDesc('id')->where('shop_id', $shopId)->get();
     }
 
     public function getOrderId($id)

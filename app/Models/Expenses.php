@@ -13,4 +13,9 @@ class Expenses extends Model
         'package',
         'price'
     ];
+
+    public function getAllExpenses()
+    {
+        return Expenses::orderByDesc('id')->get();
+    }
 }

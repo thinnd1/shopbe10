@@ -31,18 +31,25 @@ class UsersController extends Controller
       return response()->json($getUser);
   }
 
-public function show()
+public function show($id)
 {
-    $user = User::all();
+    $user = User::where('id', $id)->first();
     return response()->json($user);
 }
 
-public function create(Request $request)
+public function store(Request $request)
 {
   $validation = $request->validate([
    'name'=>'required|string|min:3|max:70',
    'email'=>'required|string|email|max:200|unique:user',
    'password'=>'required|string|min:6',
+  ]);  
+  
+  
+  $user = User::create([
+    'name' => $request->name,
+    'email' => $request->email,
+    'password' => Hash::make($request['password']),
   ]);
 
   if(!$validation){
@@ -124,6 +131,25 @@ public function update(Request $request, $id)
         'status'=>'ok',
         'message'=>'user updated successfuly',
         'user'=>$user]);
+      }
+    }
+
+    public function delete($id)
+    {
+      $user_valid = User::findOrFail($id);
+      if(is_null($user_valid)){
+        return response()->json([
+            'status'=>'error',
+            'message'=>'user not found !!',
+        ]);
+      } else {
+        // delete bout Cart & Wishlist user
+        $user = User::where('id', $id)
+        ->delete();
+        return response()->json([
+            'status'=>'ok',
+            'message'=>'user account deleted successfuly'
+        ]);
       }
     }
 

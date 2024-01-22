@@ -19,6 +19,7 @@ use App\Http\Controllers\API\OrderDetailController;
 use App\Http\Controllers\API\ShopController;
 use App\Http\Controllers\API\CartController;
 use App\Http\Controllers\API\ShopExpenseController;
+use App\Http\Controllers\API\ExpensesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,7 +66,7 @@ Route::put('/admin/brands/update/{id}' ,[BrandsController::class, 'update']);
 Route::delete('/admin/brands/delete/{id}' ,[BrandsController::class, 'delete']);
 
 //Users Api Controllers
-Route::get('user/index', [UsersController::class, 'index']);
+Route::get('user', [UsersController::class, 'index']);
 Route::get('users/{id}', [UsersController::class, 'show'])->name('users.show');
 Route::post('users', [UsersController::class, 'store'])->name('users.store');
 Route::put('/user/update/{id}', [UsersController::class, 'update']);
@@ -92,7 +93,8 @@ Route::get('/admin/product/category/subCategory', [SubCategoryController::class,
 Route::get('/admin/product/category/subCategory/{id}', [SubCategoryController::class, 'index']);
 
 // OrderController
-Route::get('order', [OrderController::class, 'index']);
+Route::get('orders', [OrderController::class, 'index']);
+Route::get('orders/{id}', [OrderController::class, 'getAllOrder']);
 Route::get('order/{id}', [OrderController::class, 'show'])->name('order.show');
 Route::get('show-order-user-id/{id}', [OrderController::class, 'showOrderUserId']);
 
@@ -121,3 +123,4 @@ Route::get('cart', [CartController::class, 'index']);
 
 Route::post('shop-expense', [ShopExpenseController::class, 'store']);
 Route::get('get-shop-expense', [ShopExpenseController::class, 'index']);
+ExpensesController
