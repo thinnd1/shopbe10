@@ -49,6 +49,8 @@ Route::put('/product',[ProductsController::class, 'update']);
 Route::get('/product/image/{id}', [ProductsController::class, 'imageProductIndex']);
 Route::get('/product/{id}',[ProductsController::class, 'show']);
 Route::get('/product/article/images', [ProductsController::class, 'ProductArticleImages']);
+Route::get('/get-new-product-shop/{id}', [ProductsController::class, 'getNewProductShop']);
+Route::get('/get-new-product-admin', [ProductsController::class, 'getNewProductAdmin']);
 
 //brand Controllers
 Route::get('/product/brands/index', [BrandsController::class, 'index']);
@@ -101,6 +103,8 @@ Route::get('show-order-user-id/{id}', [OrderController::class, 'showOrderUserId'
 Route::post('order', [OrderController::class, 'store'])->name('order.store');
 Route::put('order', [OrderController::class, 'update'])->name('order.update');
 Route::delete('order/{user}', [OrderController::class, 'destroy'])->name('order.destroy');
+Route::get('get-total-price-shop/{id}', [OrderController::class, 'getTotalPriceShop']);
+Route::get('get-total-price', [OrderController::class, 'getTotalPrice']);
 
 // OrderDetailController
 Route::get('orderdetail', [OrderDetailController::class, 'index']);
@@ -125,6 +129,7 @@ Route::get('cart', [CartController::class, 'index']);
 Route::post('shop-expense', [ShopExpenseController::class, 'store']);
 Route::get('get-shop-expense', [ShopExpenseController::class, 'index']);
 Route::post('add-shop-expenses', [ShopExpenseController::class, 'addShopExpenses']);
+Route::get('get-total-system', [ShopExpenseController::class, 'getTotalSystem']);
 
 // ExpensesController 
 Route::get('get-expense', [ExpensesController::class, 'index']);

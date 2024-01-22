@@ -107,4 +107,23 @@ class OrderController extends Controller
             'message' => 'Order delete successfuly',
         ],200);
     }
+    public function getTotalPriceShop($shopId)
+    {
+        $order = $this->order->getTotalPriceShop($shopId);
+
+        return response()->json([
+            'status' => 'ok',
+            'order' => $order
+        ],200);
+    }
+
+    public function getTotalPrice()
+    {
+        $order = $this->order->getTotalPrice();
+
+        return response()->json([
+            'status' => 'ok',
+            'order' => $order
+        ],200);
+    }
 }

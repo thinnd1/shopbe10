@@ -9,14 +9,17 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\ShopExpenses;
 
 class ProductsController extends Controller
 {
-
-    protected $product;
-    public function __construct(Product $product)
-    {
+  protected $shopExpense;
+  protected $product;
+  
+  public function __construct(Product $product, ShopExpenses $shopExpense)
+  {
         $this->product = $product;
+        $this->shopExpense = $shopExpense;
     }
 
     public function index(Request $request)
@@ -69,6 +72,18 @@ class ProductsController extends Controller
       //   'product_description' => 'min:10'
       // ]);
 
+      $shopExpenses = $this->shopExpense->getShopId($request['shop_id']);
+      $productCount = $this->product->countProductByShopId($request['shop_id']);
+      if (!empty($shopExpenses)) {
+        if ($productCount > (int)($shopExpenses->expenses_pakage)) {
+          return response()->json([
+            'status' => 'fail',
+            'massage' => 'Quá hạn để đăng',
+        ], 400);
+        }
+      }
+
+
       $image = $request->file('product_image');
       $imageName = time() . '.' . $image->getClientOriginalExtension();
       $image->move(public_path('images'), $imageName);
@@ -111,6 +126,26 @@ class ProductsController extends Controller
       return response()->json([
         'status' => 'ok',
         'message' => 'product deleted successfuly'
+      ]);
+    }
+
+    // thong ke sp moi trong tuan
+    public function getNewProductShop($shopId)
+    {
+      $product = $this->product->getNewProductShop($shopId);
+      return response()->json([
+        'status' => 'ok',
+        'data' => $product
+      ]);
+    }
+
+    // thong ke sp ben admin
+    public function getNewProductAdmin()
+    {
+      $product = $this->product->getNewProductAdmin();
+      return response()->json([
+        'status' => 'ok',
+        'data' => $product
       ]);
     }
 }

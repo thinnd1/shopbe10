@@ -9,6 +9,8 @@ use App\Models\Wishlist;
 use App\Models\WishlistItem;
 use App\Models\ProductImage;
 use App\Models\Brands; 
+use Carbon\Carbon;
+use DB;
 
 class product extends Model
 {
@@ -60,6 +62,11 @@ class product extends Model
     {
         return Product::where('id', $id)->first();
     }
+    
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 
     public function updateProduct($id, $data)
     {
@@ -79,5 +86,50 @@ class product extends Model
     public function deleteProduct($id)
     {
         return Product::where('id', $id)->delete();
+    }
+
+    public function countProductByShopId($shopId)
+    {
+        return Product::where('shop_id', $shopId)->count();
+    }
+
+    public function getNewProductShop($shopId)
+    {
+        $weekAgo = Carbon::now()->subDays(7);
+
+        return DB::table('products')
+            ->where('created_at', '>=', $weekAgo)
+            ->where('shop_id', $shopId)
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+    }
+
+    public function getNewProductAdmin()
+    {
+        $weekAgo = Carbon::now()->subDays(30);
+
+        return DB::table('products')
+            ->where('created_at', '>=', $weekAgo)
+            ->orderBy('created_at', 'desc')
+            ->take(50)
+            ->get();
+    }
+    // xem tong so san ham ban dc
+    public function getProductsWithOrders()
+    {
+        // Retrieve products along with their associated orders
+        $productsWithOrders = Product::with('orders')->get();
+
+        return $productsWithOrders;
+    }
+
+    // xem lich su mua hang
+    public function getHistoryOrder($userId)
+    {
+        // Retrieve products along with their associated orders
+        $productsWithOrders = Product::with('orders')->get();
+
+        return $productsWithOrders;
     }
 }

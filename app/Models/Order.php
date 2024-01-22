@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Order extends Model
 {
@@ -23,8 +24,6 @@ class Order extends Model
         'status',
         'amount',
         'description',
-        'is_confirmed',
-        'is_finished',
     ];
 
 
@@ -50,6 +49,11 @@ class Order extends Model
     public function shipment()
     {
         return $this->hasOne(Shipment::class, 'order_id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 
     public function getAllOrder($shopId)
@@ -92,4 +96,13 @@ class Order extends Model
         return Order::where('id', $id)->delete();
     }
 
+    public function getTotalPrice()
+    {
+        return DB::table('orders')->sum('price');
+    }
+
+    public function getTotalPriceShop($shopId)
+    {
+        return DB::table('orders')->where('shop_id', $shopId)->sum('price');
+    }
 }

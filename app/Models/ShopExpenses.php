@@ -28,4 +28,21 @@ class ShopExpenses extends Model
         ->select('shop_expenses.created_at', 'shops.name as shop_name', 'expenses.package as expenses_pakage')
         ->get();            
     }
+
+    public function getShopId($shopId)
+    {
+        return DB::table('shop_expenses')
+        ->join('shops', 'shop_expenses.shop_id', '=', 'shops.id')
+        ->join('expenses', 'shop_expenses.expenses_id', '=', 'expenses.id')
+        ->select('expenses.package as expenses_pakage')
+        ->where('shops.id', $shopId)
+        ->first();
+    }
+
+    public function totalSystem()
+    {
+        return DB::table('shop_expenses')
+        ->join('expenses', 'shop_expenses.expenses_id', '=', 'expenses.id')
+        ->sum("price");
+    }
 }
