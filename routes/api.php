@@ -94,7 +94,7 @@ Route::get('/admin/product/category/subCategory/{id}', [SubCategoryController::c
 
 // OrderController
 Route::get('orders', [OrderController::class, 'index']);
-Route::get('orders/{id}', [OrderController::class, 'getAllOrder']);
+Route::get('orders/{id}', [OrderController::class, 'index']);
 Route::get('order/{id}', [OrderController::class, 'show'])->name('order.show');
 Route::get('show-order-user-id/{id}', [OrderController::class, 'showOrderUserId']);
 
