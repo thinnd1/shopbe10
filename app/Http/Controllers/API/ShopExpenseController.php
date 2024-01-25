@@ -39,6 +39,10 @@ class ShopExpenseController extends Controller
     public function getTotalSystem()
     {
         $shopExpenses = $this->shopExpense->totalSystem();
+        return response()->json([
+            'status' => 'fail',
+            'data' => $shopExpenses
+        ], 200);
         return response()->json($shopExpenses);
     }
 }
